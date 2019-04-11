@@ -24,10 +24,12 @@ startScroll.onclick = function begin() {
     timeout = setInterval(scroll, waitTime);
 }
 
+document.getElementById('stopScroll').onclick = function(){
+    pixels = 0;
+}
+
 function scroll(element) {
-    chrome.tabs.executeScript(
-        {
-            code: 'window.scrollBy(0, ' + pixels + ');'
-        }
-    );
+    chrome.tabs.executeScript({
+        code: 'window.scrollBy(0, ' + pixels + ');'
+    });
 };
