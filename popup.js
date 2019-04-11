@@ -1,14 +1,16 @@
 var pixels,waitTime,timeout;
 var startScroll = document.getElementById('startScroll');
+var stopScroll  = document.getElementById('stopScroll');
 var slider      = document.getElementById("myRange");
 
-startScroll.style.backgroundColor = '#00FF7F';
+startScroll.style.backgroundColor   = '#00FF7F';
+stopScroll.style.backgroundColor    = '#FF007F';
 
 //Scroll object
 startScroll.onclick = setSlider;
 slider.onchange     = setSlider;
 
-document.getElementById('stopScroll').onclick = function(){
+stopScroll.onclick = function(){
     pixels = 0;
 };
 
@@ -36,6 +38,23 @@ function setSlider(){
 
 function scroll(element) {
     chrome.tabs.executeScript({
-        code: 'window.scrollBy(0, ' + pixels + ');'
+        code: returnScript()
     });
+}
+
+function returnScript(){
+    var script = [
+        'if(document.title.includes(\'Google Sheets\')){',
+
+        '}else if(document.title.includes(\'Google Doc\')){',
+
+        '}else{',
+            'window.scrollBy(0, ', pixels, ');',
+        '}'
+    ];
+
+    var joinedScript = script.join('');
+    console.log(joinedScript);
+
+    return joinedScript;
 }
