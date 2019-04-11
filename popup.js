@@ -1,11 +1,20 @@
-let startScroll = document.getElementById('startScroll');
-startScroll.style.backgroundColor = '#00FF7F';
 var pixels,waitTime,timeout;
+var startScroll = document.getElementById('startScroll');
+var slider      = document.getElementById("myRange");
+
+startScroll.style.backgroundColor = '#00FF7F';
 
 //Scroll object
-startScroll.onclick = function begin() {
+startScroll.onclick = setSlider;
+slider.onchange     = setSlider;
+
+document.getElementById('stopScroll').onclick = function(){
+    pixels = 0;
+};
+
+function setSlider(){
     clearTimeout(timeout);
-    var slider = document.getElementById("myRange");
+
     if(slider.value < 300)
         waitTime = 300 - slider.value;
     else
@@ -21,15 +30,12 @@ startScroll.onclick = function begin() {
         pixels = 5;
     else if(slider.value >= 500)
         pixels = 6;
-    timeout = setInterval(scroll, waitTime);
-}
 
-document.getElementById('stopScroll').onclick = function(){
-    pixels = 0;
+    timeout = setInterval(scroll, waitTime);
 }
 
 function scroll(element) {
     chrome.tabs.executeScript({
         code: 'window.scrollBy(0, ' + pixels + ');'
     });
-};
+}
